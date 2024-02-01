@@ -2,20 +2,13 @@ const { Router } = require("express");
 const { User } = require("../db");
 const { userCreate } = require("../type");
 const jwt = require("jsonwebtoken");
+const { userMiddleware } = require("../middlewares/User");
 const router = Router();
 
 router.post("/signup", async (req, res) => {
-  const username = req.body.username;
-  const firstname = req.body.firstname;
-  const lastname = req.body.lastname;
-  const password = req.body.password;
+  const userDetails = req.body;
 
-  const userPayload = userCreate.safeParse(
-    username,
-    firstname,
-    lastname,
-    password
-  );
+  const userPayload = userCreate.safeParse(userDetails);
 
   if (!userPayload.success) {
     return res.status(401).json({
@@ -23,15 +16,16 @@ router.post("/signup", async (req, res) => {
       msg: "Wrong inputs",
     });
   }
-  await User.create({
-    username: username,
-    firstName: firstname,
-    lastName: lastname,
-    password: password,
+  const newUser = await User.create({
+    username: userDetails.username,
+    firstName: userDetails.firstname,
+    lastName: userDetails.lastname,
+    password: userDetails.password,
   });
   return res.status(200).json({
     success: true,
     msg: "User created successfully",
+    newUser,
   });
 });
 
@@ -74,8 +68,9 @@ router.post("/signin", async (req, res) => {
   }
 });
 
+router.use("/update-profile", userMiddleware);
 router.post("/update-profile", async (req, res) => {
-  const userDetails = await User.findById(req.user._id);
+  const userDetails = await User.findById(req.user.id);
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
   const password = req.body.password;
