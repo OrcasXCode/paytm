@@ -94,4 +94,40 @@ router.post("/update-profile", async (req, res) => {
   });
 });
 
+router.get("/bulk", async (req, res) => {
+  try {
+    const filter = req.query.filter || "";
+
+    const users = await User.find({
+      $or: [
+        {
+          firstName: {
+            $regex: filter,
+          },
+        },
+        {
+          lastName: {
+            $regex: filter,
+          },
+        },
+      ],
+    });
+
+    return res.status(200).json({
+      user: users.map((user) => ({
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        _id: user._id,
+      })),
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      msg: "Server Error",
+    });
+  }
+});
+
 module.exports = router;
