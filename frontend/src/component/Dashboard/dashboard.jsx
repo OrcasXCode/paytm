@@ -35,11 +35,47 @@ export function Dashboard(props) {
             </header>
 
             {/* balance */}
-            <div className='flex flex-col w-[90%] justify-around'>
-                <h1 className='flex font-bold text-3xl'>Your Balance 0</h1>
+            <div className='flex flex-col m-4 justify-between space-y-4'>
+                <h1 className='flex font-bold text-3xl'>Your Balance $0</h1>
                 <h1 className='flex font-bold text-3xl'>Users</h1>
-                <input type='text' placeholder='Search Users....' className='border-2 p-2'></input>
+                <input type='text' placeholder='Search Users....' className='border-2 p-2 rounded-md'></input>
             </div>
+
+            {/* users */}
+            <div className='space-y-7'>
+                <div className='flex flex-row justify-between'>
+                    <div className='flex w-[200px] space-x-7 flex-row justify-center items-center'>
+                        <div className='rounded-full  bg-gray-200 text-black p-2'>U1</div>
+                        <h2 className='flex font-semibold text-xl'>Users 1</h2>
+                    </div>
+                    <div className='justify-center'>
+                        <Link to="/send"><button className='inline-flex items-center  rounded-md bg-black px-3.5 py-2.5 font-semibold  text-white'>
+                        Send money</button></Link>
+                    </div>
+                </div>  
+                <div className='flex flex-row justify-between'>
+                    <div className='flex w-[200px] flex-row space-x-7  justify-center items-center'>
+                        <div className='rounded-full bg-gray-200 text-black p-2'>U2</div>
+                        <h2 className='flex font-semibold text-xl'>Users 2</h2>
+                    </div>
+                    <button className='inline-flex items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold  text-white'>Send money</button>
+                </div>  
+                <div className='flex flex-row justify-between'>
+                    <div className='flex w-[200px] flex-row space-x-7  justify-center items-center'>
+                        <div className='rounded-full bg-gray-200 text-black p-2'>U3</div>
+                        <h2 className='flex font-semibold text-xl'>Users 3</h2>
+                    </div>
+                    <button className='inline-flex items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold  text-white'>Send money</button>
+                </div>  
+                <div className='flex flex-row justify-between'>
+                    <div className='flex w-[200px] flex-row space-x-7  justify-center items-center'>
+                        <div className='rounded-full bg-gray-200 text-black p-2'>U4</div>
+                        <h2 className='flex font-semibold text-xl'>Users 4</h2>
+                    </div>
+                    <button className='inline-flex items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold  text-white'>Send money</button>
+                </div>  
+            </div>
+            
         </div>
     )
 }
