@@ -1,8 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { ArrowRight, Link } from 'lucide-react'
 
 
 export function Signup(props) {
+
+  const [firstname,setFirstName]=useState("");
+  const [lastname,setLirstName]=useState("");
+  const [email,setEmail]=useState("");
+  const [password,setPassword]=useState("");
+
     
 
     return (
@@ -28,6 +34,9 @@ export function Signup(props) {
                     type="text"
                     placeholder="First Name"
                     id="name"
+                    onChange={(e)=>{
+                      setFirstName(e.target.value);
+                    }}
                   ></input>
                 </div>
               </div>
@@ -42,6 +51,9 @@ export function Signup(props) {
                     type="text"
                     placeholder="Last Name"
                     id="name"
+                    onChange={(e)=>{
+                      setLirstName(e.target.value);
+                    }}
                   ></input>
                 </div>
               </div>
@@ -56,6 +68,9 @@ export function Signup(props) {
                     type="email"
                     placeholder="Email"
                     id="email"
+                    onChange={(e)=>{
+                      setEmail(e.target.value)
+                    }}
                   ></input>
                 </div>
               </div>
@@ -72,6 +87,9 @@ export function Signup(props) {
                     type="password"
                     placeholder="Password"
                     id="password"
+                    onChange={(e)=>{
+                      setPassword(e.target.value)
+                    }}
                   ></input>
                 </div>
               </div>
@@ -79,6 +97,26 @@ export function Signup(props) {
                 <button
                   type="button"
                   className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
+                  onClick={()=>{
+                    fetch('http://localhost:3000/user/signup',{
+                      method:'POST',
+                      body:JSON.stringify({
+                        firstname,
+                        lastname,
+                        email,
+                        password
+                      }),
+                      headers:{
+                        "Content-type":"application/json"
+                      }
+                    })
+                    .then(async function (res){
+                      const data=await res.json();
+                    })
+                    .catch((e)=>{
+                      console.log(e);
+                    })
+                  }}
                 >
                   Create Account <ArrowRight className="ml-2" size={16} />
                 </button>

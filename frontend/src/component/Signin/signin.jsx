@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { ArrowRight } from 'lucide-react'
 
 
 export function Signin(props) {
+
+  const [email,setEmail]=useState("");
+  const [password,setPassword]=useState("");
   
 
  return (
@@ -27,6 +30,9 @@ export function Signin(props) {
                     className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                     type="email"
                     placeholder="Email"
+                    onChange={(e)=>{
+                      setEmail(e.target.value);
+                    }}
                   ></input>
                 </div>
               </div>
@@ -46,6 +52,9 @@ export function Signin(props) {
                     className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                     type="password"
                     placeholder="Password"
+                    onChange={(e)=>{
+                      setPassword(e.target.value)
+                    }}
                   ></input>
                 </div>
               </div>
@@ -53,8 +62,27 @@ export function Signin(props) {
                 <button
                   type="button"
                   className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
+                  onClick={()=>{
+                    fetch('http://localhost:3000/user/signin',{
+                      method:"POST",
+                      body:JSON.stringify({
+                        email,
+                        password
+                      }),
+                      headers:{
+                        "Content-type": "application/json",
+                      }
+                    })
+                    .then (async function(res){
+                      const data=await res.json();
+
+                    })
+                    .catch((e) => {
+                      toast.error("Incorrect username or password");
+                    });
+                  }}
                 >
-                  Get started <ArrowRight className="ml-2" size={16} />
+                  Sign In <ArrowRight className="ml-2" size={16} />
                 </button>
               </div>
               <p className="mt-2 text-center text-sm text-gray-600 ">
