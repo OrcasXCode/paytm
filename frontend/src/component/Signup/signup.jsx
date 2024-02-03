@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { ArrowRight, Link } from 'lucide-react'
+import { ArrowRight} from 'lucide-react'
+import { toast, Toaster } from "react-hot-toast";
 
 
 export function Signup(props) {
@@ -14,6 +15,7 @@ export function Signup(props) {
     return (
     <section>
       <div className="flex items-center justify-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
+        <div> <Toaster /></div>
         <div className="xl:mx-auto xl:w-full xl:max-w-sm 2xl:max-w-md">
           <h2 className="text-center text-2xl font-bold leading-tight text-black">
             Sign up to create account
@@ -111,10 +113,13 @@ export function Signup(props) {
                       }
                     })
                     .then(async function (res){
-                      const data=await res.json();
+                      if(res.ok){
+                        const data=await res.json();
+                        toast.success("SignUp Successfull")
+                      }                      
                     })
                     .catch((e)=>{
-                      console.log(e);
+                      toast.error("SignUp Failed")
                     })
                   }}
                 >

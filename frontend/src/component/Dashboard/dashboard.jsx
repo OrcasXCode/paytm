@@ -9,13 +9,33 @@ export function Dashboard(props) {
 
     const [users,setUsers]=useState([]);
     const [filter,setFilter]=useState("");
+    const [balance,setBalance]=useState(0);
     const token = localStorage.getItem('token');
+
+    useEffect(() => {
+        if (token) {
+            axios.get("http://localhost:3000/account/balance", {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(res => {
+                const data=res.data.balance;
+                setBalance(data);
+                console.log(data);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        }
+    }, []);
+
 
     useEffect(()=>{
         axios.get("http://localhost:3000/user/bulk?filter="+filter)
         .then(res=>{
             setUsers(res.data.user)
-            console.log(res);
+            console.log("res",res);
         })
     },[filter]);
     
@@ -58,7 +78,7 @@ export function Dashboard(props) {
 
             {/* balance */}
             <div className='flex flex-col m-4 justify-between space-y-4'>
-                <h1 className='flex font-bold text-3xl'>Your Balance $0</h1>
+                <h1 className='flex font-bold text-3xl'>Your Balance $ {balance}</h1>
                 <h1 className='flex font-bold text-3xl'>Users</h1>
                 <input type='text' placeholder='Search Users....' className='border-2 p-2 rounded-md'
                 onChange={(e)=>{

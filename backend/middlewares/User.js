@@ -8,7 +8,6 @@ function userMiddleware(req, res, next) {
   const jwttoken = words[1];
   try {
     const decodedValue = jwt.verify(jwttoken, process.env.JWT_SECRET);
-    // console.log("decoded value", decodedValue);
     req.user = decodedValue;
     if (decodedValue) {
       next();
