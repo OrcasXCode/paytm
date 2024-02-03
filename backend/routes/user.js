@@ -4,6 +4,8 @@ const { userCreate } = require("../type");
 const jwt = require("jsonwebtoken");
 const { userMiddleware } = require("../middlewares/User");
 const router = Router();
+const LocalStorage = require("node-localstorage").LocalStorage;
+const localStorage = new LocalStorage("./scratch");
 
 router.post("/signup", async (req, res) => {
   const userDetails = req.body;
@@ -67,9 +69,11 @@ router.post("/signin", async (req, res) => {
         process.env.JWT_SECRET,
         { expiresIn: "24h" }
       );
+      localStorage.setItem("token", token);
       return res.status(200).json({
         success: true,
         msg: "Signin sucsessfull",
+        user,
         token,
       });
     }

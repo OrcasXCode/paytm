@@ -4,7 +4,7 @@ import { ArrowRight } from 'lucide-react'
 
 export function Signin(props) {
 
-  const [email,setEmail]=useState("");
+  const [username,setUsername]=useState("");
   const [password,setPassword]=useState("");
   
 
@@ -31,7 +31,7 @@ export function Signin(props) {
                     type="email"
                     placeholder="Email"
                     onChange={(e)=>{
-                      setEmail(e.target.value);
+                      setUsername(e.target.value);
                     }}
                   ></input>
                 </div>
@@ -63,22 +63,34 @@ export function Signin(props) {
                   type="button"
                   className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
                   onClick={()=>{
-                    fetch('http://localhost:3000/user/signin',{
-                      method:"POST",
-                      body:JSON.stringify({
-                        email,
-                        password
-                      }),
-                      headers:{
-                        "Content-type": "application/json",
+                    fetch('http://localhost:3000/user/signin', {
+                    method: "POST",
+                    body: JSON.stringify({
+                      username,
+                      password
+                    }),
+                    headers: {
+                      "Content-type": "application/json",
+                    }
+                  })
+                    .then(async function (res) {
+                      if (res.ok) {
+                        const data = await res.json();
+                        console.log(data.token);
+                        const token=data.token;
+                        alert("SignIn Successfull");
+                        localStorage.setItem('token', token);
+                        setTimeout(() => {
+                          window.location.reload();
+                          window.location.href = '/dashboard';
+                        }, 1000);
+                      } else {
+                        throw new Error("Incorrect name or password");
                       }
                     })
-                    .then (async function(res){
-                      const data=await res.json();
-
-                    })
                     .catch((e) => {
-                      toast.error("Incorrect username or password");
+                      alert("Incorrect username or password");
+                      console.log(e);
                     });
                   }}
                 >

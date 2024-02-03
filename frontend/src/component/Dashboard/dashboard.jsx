@@ -9,6 +9,7 @@ export function Dashboard(props) {
 
     const [users,setUsers]=useState([]);
     const [filter,setFilter]=useState("");
+    const token = localStorage.getItem('token');
 
     useEffect(()=>{
         axios.get("http://localhost:3000/user/bulk?filter="+filter)
@@ -29,22 +30,28 @@ export function Dashboard(props) {
                         <Link to='/dashboard' className='font-medium'>Payments App</Link>
                     </div>
                     <div className="flex items-center lg:order-2">
-                        <Link
-                            to="/signin"
-                            className=" text-gray-800 hover:bg-gray-50 focus:ring-4 focus:ring-white font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
-                        >
-                            Log in
-                        </Link>
-                        
-                        <Link
-                            to="/signup"
-                            style={{background:'black'}}
-                            className="text-white focus:ring-4 focus:ring-white font-medium rounded-[20px]  text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
-                        >
-                            Get started
-                        </Link>
+                        {!token ? (
+                            <>
+                                <Link
+                                to="/signin"
+                                className="text-gray-800 hover:bg-gray-50 focus:ring-4 focus:ring-white font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
+                                >
+                                Log in
+                                </Link>
+                                <Link
+                                to="/signup"
+                                style={{ background: 'black' }}
+                                className="text-white focus:ring-4 focus:ring-white font-medium rounded-[20px] text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
+                                >
+                                Get started
+                                </Link>
+                            </>
+                            ) : (
+                            <div className="text-gray-800 hover:bg-gray-50 focus:ring-4 focus:ring-white font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none">
+                                Hello User !
+                            </div>
+                            )}
                     </div>
-                    
                 </div>
             </nav>
             </header>
@@ -64,7 +71,7 @@ export function Dashboard(props) {
                 {users.map(user => (
                 <div className='flex flex-row border-2 rounded-full w-[1400px] p-2 justify-between' key={user._id}>
                     <div className='flex  w-[400px] space-x-7 flex-row '>
-                        <div className='rounded-full flex w-[40px] h-[40px] items-center justify-center bg-gray-200 text-black p-2'>{user.firstName[0]}</div>
+                        <div className='rounded-full flex w-[40px] h-[40px] items-center justify-center bg-gray-200 text-black p-2'>{user.firstName[0].toUpperCase()}</div>
                         <div className='flex flex-row h-full font-semibold text-xl'>{user.firstName} {user.lastName}</div>
                     </div>
                     <div className='justify-center'>
